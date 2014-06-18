@@ -1,0 +1,14 @@
+Lote de 10.000 palavras (com parallel.forEach)
+	
+	TotalSeconds: 5532,1278744
+	Total: 1h32m12s
+	TotalSeconds: 5299,934874
+	Total: 1h28m19s
+	TotalSeconds: 5604,6085166
+	Total: 1h33m24s
+	TotalSeconds: 5853,6419278
+	Total: 1h37m33s
+	TotalSeconds: 6158,4562918
+	Total: 1h42m38s
+	TotalSeconds: 5847,9231989
+	Total: 1h37m27s

@@ -1,0 +1,667 @@
+#
+# Arquivo affix do dicionário português para o ispell
+# por Ricardo Ueda Karpischek (ueda@ime.usp.br)
+#
+nroffchars	().\\*
+texchars	()\[]{}<\>\\$*.%
+
+defstringtype "nroff" "nroff" ".mm" ".ms" ".me" ".man"
+
+boundarychars '
+
+wordchars [a-záéíóúàèìòùãõçüâêô] [A-ZÁÉÍÓÚÀÈÌÒÙÃÕÇÜÂÊÔ]
+
+altstringtype "tex" "tex" ".tex" ".bib"
+
+prefixes
+
+flag *I:
+#
+# Prefixo latino " in".
+#
+    [^M]        >       IN              # ativo > inativo
+    M           >       IM              # permeável > impermeável
+
+flag *E:
+#
+# Prefixo latino "re".
+#
+    .           >       RE              # vender > revender
+
+suffixes
+
+flag *D:
+   A      >       MENTE               # abrupta > abruptamente
+   E      >       MENTE               # leve > levemente
+
+
+flag P:
+#
+# Flexão em gênero e número de alguns substantivos e adjetivos.
+#
+#
+   A      >       -A,O               # porca > porco
+   A      >       S                  # porca > porcas
+   A      >       -A,OS              # porca > porcos
+   [^Ã] O >       -O,A               # porco > porca
+   [^Ã] O >       S                  # porco > porcos
+   [^Ã] O >       -O,AS              # porco > porcas
+   E      >       -E,A               # mestre > mestra
+   E      >       S                  # mestre > mestres
+   E      >       -E,AS              # mestre > mestras
+   R      >       A                  # criador > criadora
+   R      >       ES                 # criador > criadores
+   R      >       AS                 # criador > criadoras
+   Ã O    >       -ÃO,ÕES            # pião > piões
+
+flag G:
+#
+# Flexão simples de número
+#
+   O      >       S                  # tempo > tempos
+   A      >       S                  # turma > turmas
+   E      >       S                  # quantidade > quantidades
+   O      >       S                  # o > os
+   U      >       S                  # tatu > tatus
+   É      >       S                  # pontapé > pontapés
+   I      >       S                  # colibri > colibris
+   Á      >       S                  # gambá > gambás
+   Ó      >       S                  # nó > nós
+   Ê      >       S                  # turnê > turnês
+   Ú      >       S                  # baú > baús
+   Ô      >       S                  # robô > robôs
+   Ã      >       S                  # clã > clãs
+   N      >       S                  # nêutron > nêutrons
+   [^I] L >       -L,IS              # audível > audíveis
+   I L    >       -L,S               # fuzil > fuzis
+   R      >       ES                 # cadáver > cadáveres
+   Z      >       ES                 # verniz > vernizes
+   S      >       ES                 # país > países
+   M      >       -M,NS	             # colagem > colagens
+
+flag *R:
+#
+# Conjugações regulares de todos os tempos exceto
+#
+#     presente do indicativo
+#     perfeito do indicativo
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+# 2. Pretérito imperfeito do indicativo. Paradigma:
+#
+# cantava cantavas cantava cantávamos cantáveis cantavam
+# vendia  vendias  vendia  vendíamos  vendíeis  vendiam
+# partia  partias  partia  partíamos  partíeis  partiam
+# punha   punhas   punha   púnhamos   púnheis   punham
+#
+    A R         >       -R,VA           # cantava
+    A R         >       -R,VAS          # cantavas
+    A R         >       -AR,ÁVAMOS      # cantávamos
+    A R         >       -AR,ÁVEIS       # cantáveis
+    A R         >       -R,VAM          # cantavam
+    E R         >       -ER,IA          # vendia
+    E R         >       -ER,IAS         # vendias
+    E R         >       -ER,ÍAMOS       # vendíamos
+    E R         >       -ER,ÍEIS        # vendíeis
+    E R         >       -ER,IAM         # vendiam
+    I R         >       -R,A            # partia
+    I R         >       -R,AS           # partias
+    I R         >       -IR,ÍAMOS       # partíamos
+    I R         >       -IR,ÍEIS        # partíeis
+    I R         >       -R,AM           # partiam
+    O R         >       -OR,UNHA        # punha
+    O R         >       -OR,UNHAS       # punhas
+    O R         >       -OR,ÚNHAMOS     # púnhamos
+    O R         >       -OR,ÚNHEIS      # púnheis
+    O R         >       -OR,UNHAM       # punham
+#
+# 4. Pretérito mais que perfeito do indicativo. Paradigma:
+#
+#  cantara cantaras cantara cantáramos cantáreis cantaram
+#  vendera venderas vendera vendêramos vendêreis venderam
+#  partira partiras partira partíramos partíreis partiram
+#  pusera  puseras  pusera  puséramos  puséreis  puseram
+#
+#  puseram já consta do perfeito.
+#
+    [AEI]R      >       A               # cantara, vendera, partira
+    [AEI]R      >       AS              # cantaras, venderas, partiras
+    A R         >       -AR,ÁRAMOS      # cantáramos
+    A R         >       -AR,ÁREIS       # cantáreis
+    [AEI]R      >       AM              # cantaram, venderam, partiram
+    E R         >       -ER,ÊRAMOS      # vendêramos
+    E R         >       -ER,ÊREIS       # vendêreis
+    I R         >       -IR,ÍRAMOS      # partíramos
+    I R         >       -IR,ÍREIS       # partíreis
+    O R         >       -OR,USERA       # pusera
+    O R         >       -OR,USERAS      # puseras
+    O R         >       -OR,USÉRAMOS    # puséramos
+    O R         >       -OR,USÉREIS     # puséreis
+#
+# 5. Futuro do presente do indicativo. Paradigma:
+#
+# cantarei cantarás cantará cantaremos cantareis cantarão
+# venderei venderás venderá venderemos vendereis venderão
+# partirei partirás partirá partiremos partireis partirão
+# porei    porás    porá    poremos    poreis    porão
+#
+    [AEIO]R     >       EI              # cantarei, venderei, partirei, porei
+    [AEIO]R     >       ÁS              # cantarás, etc
+    [AEIO]R     >       Á               # cantará, etc
+    [AEIO]R     >       EMOS            # cantaremos, etc
+    [AEIO]R     >       EIS             # cantareis, etc
+    [AEIO]R     >       ÃO              # cantarão, etc
+#
+# 6. Futuro do pretérito do indicativo. Paradigma:
+#
+# cantaria cantarias cantaria cantaríamos cantaríeis cantariam
+# venderia venderias venderia venderíamos venderíeis venderiam
+# partiria partirias partiria partiríamos partiríeis partiriam
+#
+    [AEIO]R     >       IA              # cantaria, venderia, partiria, poria
+    [AEIO]R     >       IAS             # cantarias, etc
+    [AEIO]R     >       ÍAMOS           # cantaríamos, etc
+    [AEIO]R     >       ÍEIS            # cantaríeis, etc
+    [AEIO]R     >       IAM             # cantariam, etc
+#
+# 8. Pretérito imperfeito do subjuntivo. Paradigma:
+#
+# cantasse cantasses cantasse cantássemos cantásseis cantassem
+# vendesse vendesses vendesse vendêssemos vendêsseis vendessem
+# partisse partisses partisse partíssemos partísseis partissem
+# pusesse  pusesses  pusesse  puséssemos  pusésseis  pusessem
+#
+    [AEI]R      >       -R,SSE          # cantasse, vendesse, partisse
+    [AEI]R      >       -R,SSES         # cantasses, vendesses, partisses
+    A R         >       -AR,ÁSSEMOS     # cantássemos
+    A R         >       -AR,ÁSSEIS      # cantásseis
+    [AEI]R      >       -R,SSEM         # cantassem, vendessem, partissem
+    E R         >       -ER,ÊSSEMOS     # vendêssemos
+    E R         >       -ER,ÊSSEIS      # vendêsseis
+    I R         >       -IR,ÍSSEMOS     # partíssemos
+    I R         >       -IR,ÍSSEIS      # partísseis
+    O R         >       -OR,USESSE      # pusesse
+    O R         >       -OR,USESSES     # pusesses
+    O R         >       -OR,USÉSSEMOS   # puséssemos
+    O R         >       -OR,USÉSSEIS    # pusésseis
+    O R         >       -OR,USESSEM     # pusessem
+#
+# 9. Futuro do Subjuntivo. Paradigma:
+#
+# cantar cantares cantar cantarmos cantardes cantarem
+# vender venderes vender vendermos venderdes venderem
+# partir partires partir partirmos partirdes partirem
+# puser  puseres  puser  pusermos  puserdes  puserem
+#
+# cantar, vender e partir vêm do infinitivo impessoal.
+#
+    [AEI]R      >       ES              # cantares, venderes, partires
+    [AEI]R      >       MOS             # cantarmos, vendermos, partirmos
+    [AEI]R      >       DES             # cantardes, venderdes, partirdes
+    [AEI]R      >       EM              # cantarem, venderem, partirem
+    O R         >       -OR,USER        # puser
+    O R         >       -OR,USERES      # puseres
+    O R         >       -OR,USERMOS     # pusermos
+    O R         >       -OR,USERDES     # puserdes
+    O R         >       -OR,USEREM      # puserem
+#
+# 10. Particípio. Paradigma:
+#
+# cantado
+# vendido
+# partido
+# posto
+#
+    [AI]R       >       -R,DO           # cantado, partido
+    E R         >       -ER,IDO         # vendido
+    O R         >       -R,STO          # posto
+#
+# 11. Gerúndio. Paradigma:
+#
+# cantando
+# vendendo
+# partindo
+# pondo
+#
+    [AEIO]R     >       -R,NDO          # cantando, vendendo, partindo, pondo
+#
+# 12. Infinitivo pessoal. Paradigma:
+#
+# cantar cantares cantar cantarmos cantardes cantarem
+# vender venderes vender vendermos venderdes venderem
+# partir partires partir partirmos partirdes partirem
+# pôr    pores    pôr    pormos    pordes    porem
+#
+# Nos verbos regulares das três conjugações o infinitivo
+# pessoal iguala o futuro do subjuntivo
+#
+# A forma "pôr" não é incluída porque nos derivados de
+# "pôr" não ocorre o circunflexo, e, para estes, o
+# infinitivo cobre o caso da primeira pessoa.
+#
+    O R         >       ES              # pores
+    O R         >       MOS             # pormos
+    O R         >       DES             # pordes
+    O R         >       EM              # porem
+
+flag *C:
+#
+# Algumas formas verbais enclíticas. Não temos ainda um tratamento
+# adequado de formas enclíticas. Por ora estamos gerando-as para
+# todos os verbos regulares. Isso cria formas inválidas devido à
+# (falta de) transitividade como por exemplo passeá (-la). As formas
+# sendo geradas são:
+#
+# amá (-la)      (tempos compostos)
+# amamo (-nos)   (primeira do plural, presente do indicativo)
+# amemo (-nos)   (primeira do plural, presente do subjuntivo)
+# amarmo (-nos)  (primeira do plural, futuro do subjuntivo)
+# amaremo (-la)  (primeira do plural, futuro do presente do indicativo)
+#
+# Os mesmos casos se repetem para as quatro conjugações, exceto o
+# primeiro caso (tempos compostos) para a terceira conjugação, pois
+# a última vogal fica sem acento (parti-la).
+#
+# Não estamos cobrindo todos os casos de ênclise, não obstante
+# os casos não cobertos são raros no uso. Note que o imperativo
+# afirmativo, onde os casos de ênclise são frequentes, está
+# automaticamente coberto, porque nas segundas pessoas o
+# imperativo afirmativo remove o "s" final (portanto a forma
+# enclítica coincide com a conjugação normal), e a primeira
+# do plural está coberta porque vem do presente do subjuntivo.
+#
+# Estamos aplicando essas regras apenas para verbos regulares.
+# Os irregulares estão sendo tratados pelo conjugue, exatamente
+# como fazemos aqui com os regulares.
+#
+# A inclusão de formas enclíticas no br.ispell provavelmente gera
+# muitos falsos positivos. O ideal seria exigir que essas formas
+# estivessem sempre seguidas do hífen.
+#
+    A R         >       -AR,Á          # cantá (-la)
+    A R         >       -R,RMO         # preocuparmo (-nos)
+    A R         >       -R,MO          # forramo (-lo)
+    A R         >       -AR,EMO        # deixemo (-lo)
+    A R         >       -R,REMO        # deixaremo (-lo)
+    E R         >       -ER,Ê          # vendê (-la)
+    E R         >       -R,RMO         # vendermo (-nos)
+    E R         >       -R,MO          # vendemo (-lo)
+    E R         >       -ER,AMO        # vendamo (-lo)
+    E R         >       -R,REMO        # venderemo (-lo)
+    I R         >       -R,REMO        # referiremo (-nos)
+    I R         >       -R,RMO         # partirmo (-la)
+    I R         >       -R,MO          # partimo (-la)
+    I R         >       -IR,EMO        # partemo (-la)
+    O R         >       -OR,Ô          # impô (-lo)
+    O R         >       -R,RMO         # impormo (-nos)
+    O R         >       -R,MO          # impomo (-nos)
+    O R         >       -R,NHAMO       # imponhamo (-nos)
+    O R         >       -R,REMO        # imporemo (-nos)
+
+flag *T:
+#
+# Conjugações regulares dos tempos
+#
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# cante cantes cante cantemos canteis cantem
+# venda vendas venda vendamos vendais vendam
+# parta partas parta partamos partais partam
+# ponha ponhas ponha ponhamos ponhais ponham
+#
+    A R         >       -AR,E           # cante
+    A R         >       -AR,ES          # cantes
+    A R         >       -AR,EMOS        # cantemos
+    A R         >       -AR,EIS         # canteis
+    A R         >       -AR,EM          # cantem
+    E R         >       -ER,A           # venda
+    E R         >       -ER,AS          # vendas
+    E R         >       -ER,AMOS        # vendamos
+    E R         >       -ER,AIS         # vendais
+    E R         >       -ER,AM          # vendam
+    I R         >       -IR,A           # parta
+    I R         >       -IR,AS          # partas
+    I R         >       -IR,AMOS        # partamos
+    I R         >       -IR,AIS         # partais
+    I R         >       -IR,AM          # partam
+    O R         >       -R,NHA          # ponha
+    O R         >       -R,NHAS         # ponhas
+    O R         >       -R,NHAMOS       # ponhamos
+    O R         >       -R,NHAIS        # ponhais
+    O R         >       -R,NHAM         # ponham
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+# canta cante cantemos cantai cantem
+# vende venda vendamos vendei vendam
+# parte parta partamos parti  partam
+# põe   ponha ponhamos ponde  ponham
+#
+    [AE] R      >       -R,I            # cantai, vendei
+    O R         >       -R,NDE          # ponde
+
+#
+# 14. Imperativo negativo. Paradigma:
+#
+# cantes cante cantemos canteis cantem
+# vendas venda vendamos vendais vendam
+# partas parta partamos partais partam
+# ponhas ponha ponhamos ponhais ponham
+#
+# (essas formas estão incluídas noutras regras)
+#
+
+flag *N:
+#
+# Conjugações regulares no presente do indicativo
+#
+# 1. Presente do indicativo. Paradigma:
+#
+# canto cantas canta cantamos cantais cantam
+# vendo vendes vende vendemos vendeis vendem
+# parto partes parte partimos partis  partem
+# ponho pões   põe   pomos    pondes  põem  
+#
+    A R         >       -AR,O           # canto
+    [AEI]R      >       -R,S            # cantas, vendes, partis
+    A R         >       -AR,A           # canta
+    [AEI]R      >       -R,MOS          # cantamos, vendemos, partimos
+    [AE]R       >       -R,IS           # cantais, vendeis
+    [AE]R       >       -R,M            # cantam, vendem
+    E R         >       -ER,O           # vendo
+    E R         >       -ER,E           # vende
+    I R         >       -IR,O           # parto
+    I R         >       -IR,ES          # partes
+    I R         >       -IR,E           # parte
+    I R         >       -IR,EM          # partem
+    O R         >       -R,NHO          # ponho
+    O R         >       -OR,ÕES         # pões
+    O R         >       -OR,ÕE          # põe
+    O R         >       -R,MOS          # pomos
+    O R         >       -R,NDES         # pondes
+    O R         >       -OR,ÕEM         # põem
+
+
+flag *F:
+#
+# Conjugações regulares no perfeito do indicativo
+#
+# 3. Pretérito perfeito do indicativo. Paradigma:
+#
+# cantei cantaste cantou cantamos cantastes cantaram
+# vendi  vendeste vendeu vendemos vendestes venderam
+# parti  partiste partiu partimos partistes partiram
+# pus    puseste  pôs    pusemos  pusestes  puseram
+#
+# cantamos, vendemos e partimos já constam no presente do indicativo
+#
+    A R         >       -AR,EI          # cantei
+    [AEI]R      >       -R,STE          # cantaste, vendeste, partiste
+    A R         >       -AR,OU          # cantou
+    [AEI]R      >       -R,STES         # cantastes, vendestes, partistes
+    [AEI]R      >       -R,RAM          # cantaram, venderam, partiram
+    E R         >       -ER,I           # vendi
+    [EI]R       >       -R,U            # vendeu, partiu
+    I R         >       -IR,I           # parti
+    O R         >       -OR,US          # pus
+    O R         >       -OR,USESTE      # puseste
+    O R         >       -OR,ÔS          # pôs
+    O R         >       -OR,USEMOS      # pusemos
+    O R         >       -OR,USESTES     # pusestes
+    O R         >       -OR,USERAM      # puseram
+
+
+flag *Q:
+#
+# Paradigma "comunicar"
+#
+# 1. Perfeito do indicativo
+#
+# comuniquei comunicaste comunicou comunicamos comunicastes comunicaram
+#
+    .         >       -CAR,QUEI       # comuniquei
+    .         >       -R,STE          # comunicaste
+    .         >       -AR,OU          # comunicou
+    .         >       -R,MOS          # comunicamos
+    .         >       -R,STES         # comunicastes
+    .         >       -R,RAM          # comunicaram
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# comunique comuniques comunique comuniquemos comuniqueis comuniquem
+#
+    .         >       -CAR,QUE           # comunique
+    .         >       -CAR,QUES          # comuniques
+    .         >       -CAR,QUEMOS        # comuniquemos
+    .         >       -CAR,QUEIS         # comuniqueis
+    .         >       -CAR,QUEM          # comuniquem
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+# comunica comunique comuniquemos comunicai comuniquem
+#
+    .      >       -R,I            # comunicai
+
+#
+# 14. Imperativo negativo. Paradigma:
+#
+# comuniques comunique comuniquemos comuniqueis comuniquem
+#
+
+
+flag *S:
+#
+# Passear, conhecer e ferir são regulares exceto no
+#
+#     presente do indicativo
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+# Por isso as regras que seguem igualam as da conjugação regular, exceto
+# nos tempos indicados.
+#
+# Essas regras geram as conjugações corretas dos verbos com paradigma
+# ferir *e* terminados em "erir" (ingerir, preferir, etc). Outros (advertir,
+# impelir) estão fora.
+#
+# 1. Presente do indicativo. Paradigma:
+#
+# passeio passeias passeia passeamos passeais passeiam
+# conheço conheces conhece conhecemos conheceis conhecem
+# firo feres fere ferimos feris ferem
+#
+    A R         >       -AR,IO          # passeio
+    A R         >       -AR,IAS         # passeias
+    E R         >       -R,S            # conheces
+    A R         >       -AR,IA          # passeia
+    [AEI]R      >       -R,MOS          # passeamos, conhecemos, ferimos
+    [AE]R       >       -R,IS           # passeais, conheceis
+    A R         >       -AR,IAM         # passeiam
+    E R         >       -R,M            # conhecem
+    E R         >       -CER,ÇO         # conheço
+    E R         >       -ER,E           # conhece
+    I R         >       -ERIR,IRO       # firo
+    I R         >       -IR,ES          # feres
+    I R         >       -IR,E           # fere
+    I R         >       -R,S            # feris
+    I R         >       -IR,EM          # ferem
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# passeie passeies passeie passeemos passeeis passeiem
+# conheça conheças conheça conheçamos conheçais conheçam
+# fira firas fira firamos firais firam
+#
+    A R         >       -AR,IE          # passeie
+    A R         >       -AR,IES         # passeies
+    A R         >       -AR,EMOS        # passeemos
+    A R         >       -AR,EIS         # passeeis
+    A R         >       -AR,IEM         # passeiem
+    E R         >       -CER,ÇA         # conheça
+    E R         >       -CER,ÇAS        # conheças
+    E R         >       -CER,ÇAMOS      # conheçamos
+    E R         >       -CER,ÇAIS       # conheçais
+    E R         >       -CER,ÇAM        # conheçam
+    I R         >       -ERIR,IRA       # fira
+    I R         >       -ERIR,IRAS      # firas
+    I R         >       -ERIR,IRAMOS    # firamos
+    I R         >       -ERIR,IRAIS     # firais
+    I R         >       -ERIR,IRAM      # firam
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+# passeia passeie passeemos passeai passeiem
+# conhece conheça conheçamos conhecei conheçam
+# fere fira firamos feri firam
+#
+    [AE] R      >       -R,I            # passeai, conhecei
+
+#
+# 14. Imperativo negativo. Paradigma:
+#
+# cantes cante cantemos canteis cantem
+# vendas venda vendamos vendais vendam
+# partas parta partamos partais partam
+#
+# passeies passeie passeemos passeeis passeiem
+# conheças conheça conheçamos conheçais conheçam
+# firas fira firamos firais firam
+
+
+flag *A:
+#
+# Cegar é regular exceto no
+#
+#     perfeito do indicativo
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+# 3. Pretérito perfeito do indicativo. Paradigma:
+#
+# ceguei cegaste cegou cegamos cegastes cegaram
+#
+# cantamos, vendemos e partimos já constam no presente do indicativo
+#
+    .         >       -AR,UEI          # ceguei
+    .         >       -R,STE           # cegaste
+    .         >       -AR,OU           # cegou
+    .         >       -R,MOS           # cegamos
+    .         >       -R,STES          # cegastes
+    .         >       -R,RAM           # cegaram
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# cegue cegues cegue ceguemos cegueis ceguem
+#
+    .         >       -AR,UE           # cegue
+    .         >       -AR,UES          # cegues
+    .         >       -AR,UEMOS        # ceguemos
+    .         >       -AR,UEIS         # cegueis
+    .         >       -AR,UEM          # ceguem
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+# cega cegue ceguemos cegai ceguem
+#
+    .         >       -R,I            # cegai
+
+#
+# 14. Imperativo negativo. Paradigma:
+#
+# cegues cegue ceguemos cegueis ceguem
+#
+
+flag *B:
+#
+# Abraçar é regulare exceto nos tempos
+#
+#     perfeito do indicativo
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+#
+# 3. Pretérito perfeito do indicativo. Paradigma:
+#
+# abracei abraçaste abraçou abraçamos abraçastes abraçaram
+#
+    A R         >       -ÇAR,CEI         # abracei
+    A R         >       -R,STE           # abraçaste
+    A R         >       -AR,OU           # abraçou
+    A R         >       -R,MOS           # abraçamos
+    A R         >       -R,STES          # abraçastes
+    A R         >       -R,RAM           # abraçaram
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# abrace abraces abrace abracemos abraceis abracem
+#
+    A R         >       -ÇAR,CE           # abrace
+    A R         >       -ÇAR,CES          # abraces
+    A R         >       -ÇAR,CEMOS        # abracemos
+    A R         >       -ÇAR,CEIS         # abraceis
+    A R         >       -ÇAR,CEM          # abracem
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+# abraça abrace abracemos abraçai abracem
+#
+    A R         >       -R,I            # abraçai
+
+#
+# 14. Imperativo negativo. Paradigma:
+#
+# abraces abrace abracemos abraceis abracem
+#
+
+flag *M:
+#
+# magoar e abolir são regulares exceto nos tempos
+#
+#     presente do indicativo
+#     presente do subjuntivo
+#     imperativo afirmativo
+#     imperativo negativo
+#
+# 1. Presente do indicativo. Paradigma:
+#
+# magôo magoas magoa magoamos magoais magoam
+# aboles abole abolimos abolis abolem
+#
+    A R         >       -OAR,ÔO          # magôo
+    A R         >       -R,S             # magoas
+    A R         >       -AR,A            # magoa
+    A R         >       -R,MOS           # magoamos
+    A R         >       -R,IS            # magoais
+    A R         >       -R,M             # magoam
+    I R         >       -IR,ES           # aboles
+    I R         >       -IR,E            # abole
+    I R         >       -R,MOS           # abolimos
+    I R         >       -R,S             # abolis
+    I R         >       -IR,EM           # abolem
+#
+# 7. Presente do Subjuntivo. Paradigma:
+#
+# magoe magoes magoe magoemos magoeis magoem
+# (abolir não se conjuga nesse tempo)
+#
+    A R         >       -AR,E           # magoe
+    A R         >       -AR,ES          # magoes
+    A R         >       -AR,EMOS        # magoemos
+    A R         >       -AR,EIS         # magoeis
+    A R         >       -AR,EM          # magoem
+#
+# 13. Imperativo afirmativo. Paradigma:
+#
+    A R         >       -R,I            # magoai
+    I R         >       -IR,I           # aboli
+
