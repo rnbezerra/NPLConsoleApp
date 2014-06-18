@@ -26,19 +26,7 @@ namespace App.Crawler
         public static void Crawl()
         {
             LoadDictionary();
-
-            List<Word> words = wordDictionary.Values.ToList();
-            foreach (Word word in words)
-            {
-                if (!word.IsValid())
-                {
-                    System.Diagnostics.Debug.WriteLine(word.Token);
-
-                    Word removedWord = null;
-                    wordDictionary.TryRemove(word.Token, out removedWord);
-                }
-            }
-
+            
             ProccessWords();
 
             SaveWords();
