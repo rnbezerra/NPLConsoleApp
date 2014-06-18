@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Crawler\DicioCrawler.cs" />
     <Compile Include="Crawler\DicionarioInformalCrawler.cs" />
     <Compile Include="Domain\WordRepository.cs" />
     <Compile Include="Program.cs" />

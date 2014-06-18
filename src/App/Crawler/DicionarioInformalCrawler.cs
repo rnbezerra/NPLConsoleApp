@@ -1,10 +1,14 @@
 ﻿using App.Domain;
 using HtmlAgilityPack;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace App.Crawler
@@ -12,104 +16,133 @@ namespace App.Crawler
     public static class DidicionarioInformalCrawler
     {
 
-        private static string repoPath = @"C:\Users\Vtex\Downloads\NLP\br word db\words.xml";
+        private static string xmlRepoPath = @"..\..\..\..\NLP\base\words.xml";
         private static string jsonRepoPath = @"..\..\..\..\NLP\base\words.json";
-        private static Dictionary<string, Word> wordDictionary = new Dictionary<string, Word>();
-        private static int proccessedWords = 0;
+        private static ConcurrentDictionary<string, Word> wordDictionary = new ConcurrentDictionary<string, Word>();
+        private static int wordLotSize = 0;
+        private static int numberOfLots = 0;
+        private static int numberOfWordsProccessed = 0;
 
         public static void Crawl()
         {
-
             LoadDictionary();
 
-            List<string> listOfWords = temp.Split(new char[] { '\n' }).ToList();
-            foreach (string word in listOfWords)
-            {
-                string token = word.Replace("\r", "").ToLower();
-
-                if (!wordDictionary.ContainsKey(token))
-                {
-                    wordDictionary.Add(token, new Word()
-                    {
-                        Token = token,
-                        GrammaticalClass = null,
-                        FriendlyGrammaticalClass = null,
-                        GrammaticalClassAsJson = null,
-                    });
-                }
-            }
-
-
-            int lotSize = 10000;
-            List<Word> wordList = wordDictionary.Values.ToList();
-            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
-            for (int i = 0; i < wordList.Count; i += lotSize)
-            {
-                watch.Start();
-                List<Word> list = new List<Word>();
-                for (int j = i; j < i + lotSize; j++)
-                {
-                    if (j < wordList.Count)
-                    {
-                        list.Add(wordList[j]);
-                    }
-                }
-
-                Parallel.ForEach(list, word => SearchWord(word));
-
-                watch.Stop();
-                System.Diagnostics.Debug.WriteLine("TotalSeconds: " + watch.Elapsed.TotalSeconds);
-                System.Diagnostics.Debug.WriteLine(string.Format("Total: {0}h{1}m{2}s", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds));
-                watch.Reset();
-            }
-
-            StringBuilder log = new StringBuilder();
             List<Word> words = wordDictionary.Values.ToList();
-            
-            watch.Start();
             foreach (Word word in words)
             {
-                log.AppendLine(SearchWord(word));
-
-                if (proccessedWords % lotSize == 0)
+                if (!word.IsValid())
                 {
-                    //System.Diagnostics.Debug.Write(log.ToString());
-                    log = new StringBuilder();
+                    System.Diagnostics.Debug.WriteLine(word.Token);
 
-                    watch.Stop();
-                    //System.Diagnostics.Debug.WriteLine("TotalSeconds: " + watch.Elapsed.TotalSeconds);
-                    System.Diagnostics.Debug.WriteLine(string.Format("Total: {0}h{1}m{2}s", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds));
-                    watch.Reset();
+                    Word removedWord = null;
+                    wordDictionary.TryRemove(word.Token, out removedWord);
                 }
             }
+
+            ProccessWords();
 
             SaveWords();
         }
 
-        private static string RemoveAccents(this string text)
+        private static void LoadDictionary()
         {
-            StringBuilder sbReturn = new StringBuilder();
-            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
-            foreach (char letter in arrayText)
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            WordRepository repository = new WordRepository();
+            string serializedJson = File.ReadAllText(jsonRepoPath);
+            repository = Newtonsoft.Json.JsonConvert.DeserializeObject<WordRepository>(serializedJson);
+
+            foreach (Word word in repository.WordList)
             {
-                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(letter) != System.Globalization.UnicodeCategory.NonSpacingMark)
-                    sbReturn.Append(letter);
+                if (!wordDictionary.ContainsKey(word.Token))
+                {
+                    word.GrammaticalClass = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<GrammaticalClassEnum, Grammar>>(word.GrammaticalClassAsJson);
+
+                    wordDictionary.TryAdd(word.Token, word);
+                }
             }
-            return sbReturn.ToString();
+
+
+            watch.Stop();
+            System.Diagnostics.Debug.WriteLine(string.Format("LoadDictionary: {0:D2}h{1:D2}m{2:D2}s", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds));
         }
+
+        private static void ProccessWords()
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            wordLotSize = 100;
+
+            List<Word> listOfWords = wordDictionary.Values.ToList();
+            //Queue<Thread> threadQueue = new Queue<Thread>();
+
+            ////for (int i = 0; i < listOfWords.Count; i += wordLotSize)
+            //for (int i = 0; i < 10000; i += wordLotSize)
+            //{
+            //    List<Word> listToProccess = new List<Word>();
+
+            //    for (int j = i; j < i + wordLotSize; j++)
+            //    {
+            //        if (j < listOfWords.Count)
+            //        {
+            //            listToProccess.Add(listOfWords[j]);
+            //        }
+            //        else
+            //        {
+            //            break;
+            //        }
+
+            //    }
+
+            //    Thread thread = new Thread(new ThreadStart(() => ProccessWordLot(listToProccess)));
+
+            //    threadQueue.Enqueue(thread);
+
+            //    thread.Start();                
+            //}
+
+            //Thread queuedThread = null;
+            //while (threadQueue.Count > 0)
+            //{
+            //    queuedThread = threadQueue.Dequeue();
+            //    queuedThread.Join();
+            //}
+
+            Parallel.ForEach(listOfWords, word => SearchWord(word));
+
+            watch.Stop();
+            System.Diagnostics.Debug.WriteLine(string.Format("ProccessWords: {0:D2}h{1:D2}m{2:D2}s", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds));
+        }
+
+        private static void ProccessWordLot(List<Word> words)
+        {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            foreach (Word word in words)
+            {
+                SearchWord(word);
+                numberOfWordsProccessed++;
+            }
+
+            watch.Stop();
+            System.Diagnostics.Debug.WriteLine(string.Format("ProccessWordLot(size={3}): {0}h{1}m{2}s", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds, words.Count));
+        }
+
 
         private static string SearchWord(Word word)
         {
-
-            int attempts = 5;
+            int attempts = 3;
             while (attempts > 0)
             {
                 try
                 {
-                    //if (word.GrammaticalClass != null)
-                    //{
-                    //    break;
-                    //}
+                    if (word.GrammaticalClass != null)
+                    {
+                        break;
+                    }
 
                     string htmlString = new System.Net.WebClient().DownloadString(string.Format("http://www.dicionarioinformal.com.br/{0}/", word.Token));
 
@@ -124,13 +157,13 @@ namespace App.Crawler
 
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     attempts--;
                 }
             }
 
-            proccessedWords++;
+            numberOfWordsProccessed++;
 
             if (attempts <= 0)
             {
@@ -294,7 +327,7 @@ namespace App.Crawler
 
             if (!wordDictionary.ContainsKey(word.Token))
             {
-                wordDictionary.Add(word.Token, word);
+                wordDictionary.TryAdd(word.Token, word);
             }
             else
             {
@@ -310,7 +343,6 @@ namespace App.Crawler
                 }
             }
         }
-
 
         private static void GetMoreWords(HtmlDocument doc)
         {
@@ -329,13 +361,19 @@ namespace App.Crawler
 
                         string[] splittedtext = text.Split(new char[] { ' ' });
 
-                        foreach (var textPart in splittedtext)
+                        if (splittedtext != null && splittedtext.Length > 0)
                         {
-                            if (!string.IsNullOrEmpty(textPart) && !wordDictionary.ContainsKey(textPart))
+                            foreach (Word word in splittedtext.Select(textPart => new Word(textPart)).ToList())
                             {
-                                wordDictionary.Add(textPart, new Word() { Token = textPart, GrammaticalClass = null });
-                                //System.Diagnostics.Debug.WriteLine("Nova palavras: " + textPart);
-
+                                //Word word = new Word(textPart);
+                                if (word.IsValid())
+                                {
+                                    if (!wordDictionary.ContainsKey(word.Token))
+                                    {
+                                        wordDictionary.TryAdd(word.Token, word);
+                                        //System.Diagnostics.Debug.WriteLine("Nova palavras: " + textPart);
+                                    }
+                                }
                             }
                         }
                     }
@@ -350,7 +388,7 @@ namespace App.Crawler
                 foreach (HtmlNode exemploDef in exemploDefinicaoCollection)
                 {
                     string text = exemploDef.InnerText;
-                    text = System.Text.RegularExpressions.Regex.Replace(text, @"[^\p{L}\p{N}]+", " ").ToLower();
+                    text = Regex.Replace(text, @"[^\p{L}\p{N}]+", " ").ToLower();
 
                     string[] splittedtext = text.Split(new char[] { ' ' });
 
@@ -358,7 +396,7 @@ namespace App.Crawler
                     {
                         if (!string.IsNullOrEmpty(textPart) && !wordDictionary.ContainsKey(textPart))
                         {
-                            wordDictionary.Add(textPart, new Word() { Token = textPart, GrammaticalClass = null });
+                            wordDictionary.TryAdd(textPart, new Word() { Token = textPart, GrammaticalClass = null });
                             //System.Diagnostics.Debug.WriteLine("Nova palavras: " + textPart);
 
                         }
@@ -410,15 +448,27 @@ namespace App.Crawler
             string serializedJson = Newtonsoft.Json.JsonConvert.SerializeObject(repository);
             File.WriteAllText(jsonRepoPath, serializedJson);
 
-            using (Stream stream = new FileStream(repoPath, FileMode.Create))
-            {
-                System.Xml.Serialization.XmlSerializer xmlserializer = new System.Xml.Serialization.XmlSerializer(typeof(WordRepository));
+            //using (Stream stream = new FileStream(xmlRepoPath, FileMode.Create))
+            //{
+            //    System.Xml.Serialization.XmlSerializer xmlserializer = new System.Xml.Serialization.XmlSerializer(typeof(WordRepository));
 
-                xmlserializer.Serialize(stream, repository);
-            }
+            //    xmlserializer.Serialize(stream, repository);
+            //}
 
             //string serializedXml = ServiceStack.Text.XmlSerializer.SerializeToString<WordRepository>(repository);
             //File.WriteAllText(repoPath, serializedXml);
         }
+
+        //private static string RemoveAccents(this string text)
+        //{
+        //    StringBuilder sbReturn = new StringBuilder();
+        //    var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+        //    foreach (char letter in arrayText)
+        //    {
+        //        if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(letter) != System.Globalization.UnicodeCategory.NonSpacingMark)
+        //            sbReturn.Append(letter);
+        //    }
+        //    return sbReturn.ToString();
+        //}
     }
 }
